@@ -112,7 +112,7 @@ function getSimpleEntity() {
 }
 
 /**
- * Returns a rich error.
+ * Returns a rich error. Error type: https://learn.microsoft.com/en-us/office/dev/add-ins/excel/excel-data-types-concepts#improved-error-support
  * @customfunction
  * @param {string} errorType The type of error to return.
  * @returns {any} A rich error.
@@ -122,11 +122,6 @@ function getRichError(errorTypeString?: string) {
   let errorType = Excel.ErrorCellValueType.value;
   let errorSubType = null;
   switch(errorTypeString.toLowerCase()) {
-    case "timeout":
-      errorType = Excel.ErrorCellValueType.timeout;
-      errorSubType = Excel.TimeoutErrorCellValueSubType.pythonTimeoutLimitReached;
-      break;
-      
     case "blocked":
       errorType = Excel.ErrorCellValueType.blocked;
       errorSubType = Excel.BlockedErrorCellValueSubType.dataTypeUnsupportedApp;
@@ -142,14 +137,32 @@ function getRichError(errorTypeString?: string) {
       errorSubType = Excel.CalcErrorCellValueSubType.tooDeeplyNested;
       break;
 
+    case "connect":
+      errorType = Excel.ErrorCellValueType.connect;
+      errorSubType = Excel.ConnectErrorCellValueSubType.externalLinksAccessFailed;
+      break;
+
     case "div0":
       errorType = Excel.ErrorCellValueType.div0;
       // div0 does not have subType
       break;
 
-    case "external":
+    case "external": // Not in the documentation
       errorType = Excel.ErrorCellValueType.external;
       errorSubType = Excel.ExternalErrorCellValueSubType.unknown;
+      break;
+
+    case "field":
+      errorType = Excel.ErrorCellValueType.field;
+      errorSubType = Excel.FieldErrorCellValueSubType.webImageMissingFilePart;
+      break;
+
+    case "gettingdata":
+      errorType = Excel.ErrorCellValueType.gettingData;
+      break;
+    
+    case "notavailable":
+      errorType = Excel.ErrorCellValueType.notAvailable;
       break;
 
     case "name":
@@ -157,10 +170,39 @@ function getRichError(errorTypeString?: string) {
       // "#NAME!" does not have subType
       break;
 
+    case "null":
+      errorType = Excel.ErrorCellValueType.null;
+      // null does not have subType
+      break;
+    
+    case "num":
+      errorType = Excel.ErrorCellValueType.num;
+      errorSubType = Excel.NumErrorCellValueSubType.arrayTooLarge;
+      break;
+
+    case "ref":
+      errorType = Excel.ErrorCellValueType.ref;
+      errorSubType = Excel.RefErrorCellValueSubType.externalLinksCalculatedRef;
+      break;
+
+    case "spill":
+      errorType = Excel.ErrorCellValueType.spill;
+      errorSubType = Excel.SpillErrorCellValueSubType.collision;
+      break;
+
+    case "timeout": // Not in the documentation
+      errorType = Excel.ErrorCellValueType.timeout;
+      errorSubType = Excel.TimeoutErrorCellValueSubType.pythonTimeoutLimitReached;
+      break;
+
     case "value":
-    default:
       errorType = Excel.ErrorCellValueType.value;
       errorSubType = Excel.ValueErrorCellValueSubType.coerceStringToNumberInvalid;
+      break;
+
+    default:
+      errorType = Excel.ErrorCellValueType.name;
+      // "#NAME!" does not have subType
       break;
   }
 
