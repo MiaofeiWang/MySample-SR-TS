@@ -110,3 +110,44 @@ function getSimpleEntity() {
 
   return entity;
 }
+
+/**
+ * Returns a rich error.
+ * @customfunction
+ * @param {string} errorType The type of error to return.
+ * @returns {any} A rich error.
+ */
+function getRichError(errorTypeString?: string) {
+  console.log(`Start getRichError`);
+  let errorType = Excel.ErrorCellValueType.value;
+  switch(errorTypeString) {
+    case "timeout":
+      errorType = Excel.ErrorCellValueType.timeout;
+      break;
+    case "blocked":
+      errorType = Excel.ErrorCellValueType.blocked;
+      break;
+    case "busy":
+      errorType = Excel.ErrorCellValueType.busy;
+      break;
+    case "calc":
+      errorType = Excel.ErrorCellValueType.calc;
+      break;
+    case "div0":
+      errorType = Excel.ErrorCellValueType.div0;
+      break;
+    case "external":
+      errorType = Excel.ErrorCellValueType.external;
+      break;
+    case "value":
+    default:
+      errorType = Excel.ErrorCellValueType.value;
+      break;
+  }
+  const error = {
+    type: Excel.CellValueType.error,
+    errorType: errorType,
+  };
+
+  return error;
+}

@@ -103,6 +103,19 @@
             "result": {}
         },
         {
+            "description": "Returns a rich error.",
+            "id": "GETRICHERROR",
+            "name": "GETRICHERROR",
+            "parameters": [
+                {
+                    "name": "errorTypeString",
+                    "optional": true,
+                    "type": "string"
+                }
+            ],
+            "result": {}
+        },
+        {
             "description": "Custom function which demonstrates insertion of a third-party `LinkedEntityCellValue`.",
             "id": "GETPRODUCTBYID",
             "name": "GETPRODUCTBYID",

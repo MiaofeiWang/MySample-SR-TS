@@ -10,22 +10,19 @@
 // The initialize function must be run each time a new page is loaded
 (async () => {
   await Office.onReady();
+  console.log("Office is ready");
 
   document.getElementById("sideload-msg").style.display = "none";
   document.getElementById("app-body").style.display = "flex";
   document.getElementById("run").onclick = registerLinkedEntityDomains;
 
   await registerLinkedEntityDomains();
-  // async () => { await registerLinkedEntityDomains(); };
 })();
 
-// Office.onReady(async () => {
-//   document.getElementById("sideload-msg").style.display = "none";
-//   document.getElementById("app-body").style.display = "flex";
-//   document.getElementById("run").onclick = registerLinkedEntityDomains;
-
-//   //async () => { await registerLinkedEntityDomains(); };
-// });
+//Office.onReady(async () => {
+  //Office.context.ui.displayDialogAsync('https://www.bing.com');
+  //console.log("Office is ready from 2nd onReady");
+//});
 
 export async function run() {
   try {
