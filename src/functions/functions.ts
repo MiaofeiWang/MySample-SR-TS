@@ -120,34 +120,54 @@ function getSimpleEntity() {
 function getRichError(errorTypeString?: string) {
   console.log(`Start getRichError`);
   let errorType = Excel.ErrorCellValueType.value;
+  let errorSubType = null;
   switch(errorTypeString) {
     case "timeout":
       errorType = Excel.ErrorCellValueType.timeout;
+      errorSubType = Excel.TimeoutErrorCellValueSubType.pythonTimeoutLimitReached;
       break;
     case "blocked":
       errorType = Excel.ErrorCellValueType.blocked;
+      errorSubType = Excel.BlockedErrorCellValueSubType.dataTypeUnsupportedApp;
       break;
     case "busy":
       errorType = Excel.ErrorCellValueType.busy;
+      errorSubType = Excel.BusyErrorCellValueSubType.loadingImage;
       break;
     case "calc":
       errorType = Excel.ErrorCellValueType.calc;
+      errorSubType = Excel.CalcErrorCellValueSubType.tooDeeplyNested;
       break;
     case "div0":
       errorType = Excel.ErrorCellValueType.div0;
+      // div0 does not have subType
       break;
     case "external":
       errorType = Excel.ErrorCellValueType.external;
+      errorSubType = Excel.ExternalErrorCellValueSubType.unknown;
       break;
     case "value":
     default:
       errorType = Excel.ErrorCellValueType.value;
+      errorSubType = Excel.ValueErrorCellValueSubType.coerceStringToNumberInvalid;
       break;
   }
-  const error = {
-    type: Excel.CellValueType.error,
-    errorType: errorType,
-  };
+
+  let error = {};
+  if (errorSubType) {
+    error = {
+      type: Excel.CellValueType.error,
+      basicType: Excel.RangeValueType.error,
+      errorType: errorType,
+      errorSubType: errorSubType,
+    };
+  } else {
+    error = {
+      type: Excel.CellValueType.error,
+      basicType: Excel.RangeValueType.error,
+      errorType: errorType,
+    };
+  }
 
   return error;
 }
