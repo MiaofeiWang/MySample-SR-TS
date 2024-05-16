@@ -103,7 +103,7 @@
             "result": {}
         },
         {
-            "description": "Returns a rich error.",
+            "description": "Returns a rich error. Error type: https://learn.microsoft.com/en-us/office/dev/add-ins/excel/excel-data-types-concepts#improved-error-support",
             "id": "GETRICHERROR",
             "name": "GETRICHERROR",
             "parameters": [
