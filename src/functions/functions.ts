@@ -29,8 +29,8 @@ export function logMessage(message: string): string {
 
 /**
  * @customfunction
- * @param {any[]} input 
- * @param {CustomFunctions.Invocation} invocation 
+ * @param {any[]} input
+ * @param {CustomFunctions.Invocation} invocation
  * @returns {Promise<string>} Concate the input array.
  * @requiresParameterAddresses
  */
@@ -112,6 +112,33 @@ function getSimpleEntity() {
 }
 
 /**
+ * Returns a simple entity.
+ * @customfunction
+ * @param {number} latency Latency in millisecond.
+ * @param {any} dependency Only for triggering chained calc.
+ * @returns {any} A simple entity.
+ */
+function getRandomEntityAfterAsyncLatentcy(latency?: number, dependency?: any) {
+  console.log(`Start getSimpleEntityAfterAsyncLatentcy`);
+  let randomValue = Math.floor(Math.random() * 100);
+  const entity = {
+    type: Excel.CellValueType.entity,
+    text: "Sample Entity " + randomValue,
+    properties: {
+      randomNumber: {
+        type: Excel.CellValueType.double,
+        basicValue: randomValue,
+      },
+    },
+  };
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(entity);
+    }, latency);
+  });
+}
+
+/**
  * Returns a rich error. Error type: https://learn.microsoft.com/en-us/office/dev/add-ins/excel/excel-data-types-concepts#improved-error-support
  * @customfunction
  * @param {string} errorType The type of error to return.
@@ -160,7 +187,7 @@ function getRichError(errorTypeString?: string) {
     case "gettingdata":
       errorType = Excel.ErrorCellValueType.gettingData;
       break;
-    
+
     case "notavailable":
       errorType = Excel.ErrorCellValueType.notAvailable;
       break;
@@ -174,7 +201,7 @@ function getRichError(errorTypeString?: string) {
       errorType = Excel.ErrorCellValueType.null;
       // null does not have subType
       break;
-    
+
     case "num":
       errorType = Excel.ErrorCellValueType.num;
       errorSubType = Excel.NumErrorCellValueSubType.arrayTooLarge;

@@ -49,38 +49,6 @@ async function productLinkedEntityService(linkedEntityId: any): Promise<any> {
     try {
         const parsedLinkedEntityId: Excel.LinkedEntityId = JSON.parse(linkedEntityId);
         return makeSimpleLinkedEntity(parsedLinkedEntityId.entityId);
-        // // Parse the linkedEntityId that was passed-in by Excel.
-        // const parsedLinkedEntityId: Excel.LinkedEntityId = JSON.parse(linkedEntityId);
-
-        // // Identify the domainId of the requested linkedEntityId and call the corresponding function to create
-        // // linked entity cell values for that linked entity data domain.
-        // var linkedEntityResult = null;
-        // switch (parsedLinkedEntityId.domainId) {
-        //   case productsDomainId: {
-        //     linkedEntityResult = makeProductLinkedEntity(parsedLinkedEntityId.entityId);
-        //     break;
-        //   }
-
-        //   case categoriesDomainId: {
-        //     linkedEntityResult = makeCategoryLinkedEntity(parsedLinkedEntityId.entityId);
-        //     break;
-        //   }
-
-        //   case suppliersDomainId: {
-        //     linkedEntityResult = makeSupplierLinkedEntity(parsedLinkedEntityId.entityId);
-        //     break;
-        //   }
-
-        //   default:
-        //     throw notAvailableError;
-        // }
-
-        // if (linkedEntityResult === null) {
-        //   // Throw an error to signify to Excel that resolution/refresh of the requested linkedEntityId failed.
-        //   throw notAvailableError;
-        // }
-
-        // return linkedEntityResult;
     } catch (error) {
         console.error(error);
         throw notAvailableError;
