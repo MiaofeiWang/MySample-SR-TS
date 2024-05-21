@@ -103,6 +103,26 @@
             "result": {}
         },
         {
+            "description": "Returns a simple entity.",
+            "id": "GETRANDOMENTITYAFTERASYNCLATENTCY",
+            "name": "GETRANDOMENTITYAFTERASYNCLATENTCY",
+            "parameters": [
+                {
+                    "description": "Latency in millisecond.",
+                    "name": "latency",
+                    "optional": true,
+                    "type": "number"
+                },
+                {
+                    "description": "Only for triggering chained calc.",
+                    "name": "dependency",
+                    "optional": true,
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
             "description": "Returns a rich error. Error type: https://learn.microsoft.com/en-us/office/dev/add-ins/excel/excel-data-types-concepts#improved-error-support",
             "id": "GETRICHERROR",
             "name": "GETRICHERROR",
