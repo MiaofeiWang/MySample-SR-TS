@@ -37,6 +37,18 @@
             }
         },
         {
+            "description": "Echo the input. If input is null, return \"null\".",
+            "id": "ECHO",
+            "name": "ECHO",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
             "id": "TESTREPEATINGPARAMETER",
             "name": "TESTREPEATINGPARAMETER",
             "options": {
@@ -136,9 +148,16 @@
             "result": {}
         },
         {
-            "description": "Custom function which demonstrates insertion of a third-party `LinkedEntityCellValue`.",
-            "id": "GETPRODUCTBYID",
-            "name": "GETPRODUCTBYID",
+            "description": "Get a simple linked entity with a random ID.",
+            "id": "GETRANDOMLINKEDENTITY",
+            "name": "GETRANDOMLINKEDENTITY",
+            "parameters": [],
+            "result": {}
+        },
+        {
+            "description": "Get a linked entity for a product by its ID.",
+            "id": "GETLINKEDENTITYBYID",
+            "name": "GETLINKEDENTITYBYID",
             "parameters": [
                 {
                     "description": "Unique id of the product.",
