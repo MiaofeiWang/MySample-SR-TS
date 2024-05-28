@@ -28,6 +28,19 @@ export function logMessage(message: string): string {
 }
 
 /**
+ * Echo the input. If input is null, return "null".
+ * @customfunction
+ * @param {any} input
+ * @returns {any} The input value.
+ */
+export function echo(input: any): any {
+  if (input == null) {
+    return "null";
+  }
+  return input;
+}
+
+/**
  * @customfunction
  * @param {any[]} input
  * @param {CustomFunctions.Invocation} invocation
@@ -99,7 +112,7 @@ function getSimpleEntity() {
   let randomValue = Math.floor(Math.random() * 100);
   const entity = {
     type: Excel.CellValueType.entity,
-    text: "Sample Entity " + randomValue,
+    text: "Random Entity " + randomValue,
     properties: {
       randomNumber: {
         type: Excel.CellValueType.double,
@@ -123,7 +136,7 @@ function getRandomEntityAfterAsyncLatentcy(latency?: number, dependency?: any) {
   let randomValue = Math.floor(Math.random() * 100);
   const entity = {
     type: Excel.CellValueType.entity,
-    text: "Sample Entity " + randomValue,
+    text: "Random Entity " + randomValue,
     properties: {
       randomNumber: {
         type: Excel.CellValueType.double,

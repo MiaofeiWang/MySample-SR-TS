@@ -10,12 +10,34 @@ const addinDomainServiceId = 268436224;
 const defaultCulture = "en-US";
 
 /**
- * Custom function which demonstrates insertion of a third-party `LinkedEntityCellValue`.
+ * Get a simple linked entity with a random ID.
+ * @customfunction
+ * @return {Promise<any>} `LinkedEntityCellValue` for the requested product, if found.
+ */
+async function getRandomLinkedEntity(): Promise<any> {
+    console.log(`Start getRandomLinkedEntity ...`);
+    let randomValue = Math.floor(Math.random() * 100);
+    const linkedEntity: Excel.LinkedEntityCellValue = {
+        type: "LinkedEntity",
+        text: "Linked Entity " + randomValue,
+        id: {
+            entityId: randomValue.toString(),
+            domainId: productsDomainId,
+            serviceId: addinDomainServiceId,
+            culture: defaultCulture
+        }
+    };
+
+    return linkedEntity;
+}
+
+/**
+ * Get a linked entity for a product by its ID.
  * @customfunction
  * @param {string} productId Unique id of the product.
  * @return {Promise<any>} `LinkedEntityCellValue` for the requested product, if found.
  */
-async function getProductById(productId: string): Promise<any> {
+async function getLinkedEntityById(productId: string): Promise<any> {
     console.log(`Start getProductById: Fetching product with id ${productId} ...`);
     const linkedEntity: Excel.LinkedEntityCellValue = {
         type: "LinkedEntity",
@@ -58,7 +80,7 @@ async function productLinkedEntityService(linkedEntityId: any): Promise<any> {
 function makeSimpleLinkedEntity(productID: string): any {
     const productLinkedEntity: Excel.LinkedEntityCellValue = {
         type: "LinkedEntity",
-        text: "Chai",
+        text: "Linked Entity " + productID,
         id: {
             entityId: productID,
             domainId: productsDomainId,
