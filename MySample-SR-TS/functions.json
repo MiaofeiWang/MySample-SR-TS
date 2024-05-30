@@ -49,6 +49,72 @@
             "result": {}
         },
         {
+            "description": "Creates a formatted number.",
+            "id": "CREATEFORMATTEDNUMBER",
+            "name": "CREATEFORMATTEDNUMBER",
+            "parameters": [
+                {
+                    "name": "value",
+                    "type": "any"
+                },
+                {
+                    "name": "format",
+                    "type": "string"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Creates a PwM for number.",
+            "id": "CREATEPWMFORNUMBER",
+            "name": "CREATEPWMFORNUMBER",
+            "parameters": [
+                {
+                    "name": "value",
+                    "type": "number"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Returns a result of input + 1 for number.",
+            "id": "PLUSONEFORNUMBER",
+            "name": "PLUSONEFORNUMBER",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Returns a result of input + 1 for Excel.DoubleCellValue.",
+            "id": "PLUSONEFORDOUBLECELLVALUE",
+            "name": "PLUSONEFORDOUBLECELLVALUE",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "doublecellvalue"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Returns a result of input + 1 for Excel.FormattedNumberCellValue.",
+            "id": "PLUSONEFORFORMATTEDNUMBERCELLVALUE",
+            "name": "PLUSONEFORFORMATTEDNUMBERCELLVALUE",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "formattednumbercellvalue"
+                }
+            ],
+            "result": {}
+        },
+        {
             "id": "TESTREPEATINGPARAMETER",
             "name": "TESTREPEATINGPARAMETER",
             "options": {
