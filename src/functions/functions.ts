@@ -41,6 +41,82 @@ export function echo(input: any): any {
 }
 
 /**
+ * Creates a formatted number.
+ * @customfunction
+ * @param {number} input
+ * @param {string} format
+ * @returns {any} The formatted number.
+ */
+function createFormattedNumber(value, format) {
+  return {
+    type: "FormattedNumber",
+    basicValue: value,
+    numberFormat: format
+  }
+}
+
+/**
+ * Creates a PwM for number.
+ * @customfunction
+ * @param {number} value
+ * @returns {any}
+ */
+function createPWMForNumber(value: number) {
+  return {
+    type: Excel.CellValueType.double,
+    basicValue: value,
+    basicType: Excel.RangeValueType.double,
+    properties:
+    {
+      Name:
+      {
+        type: Excel.CellValueType.string,
+        basicValue: "Leo"
+      }
+    },
+    layouts:
+    {
+      compact:
+      {
+        icon: Excel.EntityCompactLayoutIcons.airplane
+      }
+    }
+  }
+}
+
+/**
+ * Returns a result of input + 1 for number.
+ * @customfunction
+ * @param {number} input
+ * @returns {number}
+ */
+function plusOneForNumber(input: number): number {
+  return input + 1;
+}
+
+/**
+ * Returns a result of input + 1 for Excel.DoubleCellValue.
+ * @customfunction
+ * @param {Excel.DoubleCellValue} input
+ * @returns {any}
+ */
+function plusOneForDoubleCellValue(input: Excel.DoubleCellValue): any {
+  input.basicValue = input.basicValue + 1;
+  return input;
+}
+
+/**
+ * Returns a result of input + 1 for Excel.FormattedNumberCellValue.
+ * @customfunction
+ * @param {Excel.FormattedNumberCellValue} input
+ * @returns {Excel.FormattedNumberCellValue}
+ */
+function plusOneForFormattedNumberCellValue(input: Excel.FormattedNumberCellValue): Excel.FormattedNumberCellValue {
+  input.basicValue = input.basicValue + 1;
+  return input;
+}
+
+/**
  * @customfunction
  * @param {any[]} input
  * @param {CustomFunctions.Invocation} invocation
