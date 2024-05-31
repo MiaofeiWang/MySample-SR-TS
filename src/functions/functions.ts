@@ -71,17 +71,38 @@ function createPWMForNumber(value: number) {
       Name:
       {
         type: Excel.CellValueType.string,
-        basicValue: "Leo"
+        basicValue: "Metadata for the number"
       }
     },
     layouts:
     {
       compact:
       {
-        icon: Excel.EntityCompactLayoutIcons.airplane
+        icon: Excel.EntityCompactLayoutIcons.airplane,
       }
     }
   }
+}
+
+/**
+ * Returns a result of input + 1 for type 'any'.
+ * @customfunction
+ * @param input
+ * @returns
+ */
+function plusOneForAny(input: any): any {
+  if (typeof input === "number") {
+    return input + 1;
+  } else if (typeof input === "object") {
+    if (input.type === Excel.CellValueType.double) {
+      input.basicValue = input.basicValue + 1;
+    } else if (input.type === Excel.CellValueType.formattedNumber) {
+      input.basicValue = input.basicValue + 1;
+    }
+    return input;
+  }
+
+  return input;
 }
 
 /**
@@ -91,16 +112,17 @@ function createPWMForNumber(value: number) {
  * @returns {number}
  */
 function plusOneForNumber(input: number): number {
-  return input + 1;
+  let result = input + 1;
+  return result;
 }
 
 /**
  * Returns a result of input + 1 for Excel.DoubleCellValue.
  * @customfunction
  * @param {Excel.DoubleCellValue} input
- * @returns {any}
+ * @returns {Excel.DoubleCellValue}
  */
-function plusOneForDoubleCellValue(input: Excel.DoubleCellValue): any {
+function plusOneForDoubleCellValue(input: Excel.DoubleCellValue): Excel.DoubleCellValue {
   input.basicValue = input.basicValue + 1;
   return input;
 }
