@@ -77,6 +77,18 @@
             "result": {}
         },
         {
+            "description": "Returns a result of input + 1 for type 'any'.",
+            "id": "PLUSONEFORANY",
+            "name": "PLUSONEFORANY",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
             "description": "Returns a result of input + 1 for number.",
             "id": "PLUSONEFORNUMBER",
             "name": "PLUSONEFORNUMBER",
