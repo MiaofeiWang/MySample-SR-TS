@@ -135,7 +135,7 @@
             },
             "parameters": [
                 {
-                    "name": "input",
+                    "name": "dependency",
                     "type": "any"
                 },
                 {
@@ -143,9 +143,7 @@
                     "type": "number"
                 }
             ],
-            "result": {
-                "type": "any"
-            }
+            "result": {}
         },
         {
             "id": "TESTREPEATINGPARAMETER",
