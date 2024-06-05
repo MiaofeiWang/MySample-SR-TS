@@ -139,6 +139,37 @@ function plusOneForFormattedNumberCellValue(input: Excel.FormattedNumberCellValu
 }
 
 /**
+ * Streaming function that returns an entity every interval seconds.
+ * @customfunction
+ * @param {any} dependency
+ * @param {number} interval
+ * @param {CustomFunctions.StreamingInvocation<any>} invocation
+ */
+function testStreaming(dependency: any, interval: number, invocation: CustomFunctions.StreamingInvocation<any>): void {
+  let result = 0;
+  let resEntity = {
+    type: "Entity",
+    text: "Entity " + result,
+    properties: {
+      propNumber: {
+        type: "Double",
+        basicValue: 123,
+      },
+    }
+  };
+
+  const timer = setInterval(() => {
+    result += 1;
+    resEntity.text = "Entity " + result;
+    invocation.setResult(resEntity);
+  }, interval * 1000);
+
+  invocation.onCanceled = () => {
+    clearInterval(timer);
+  };
+}
+
+/**
  * @customfunction
  * @param {any[]} input
  * @param {CustomFunctions.Invocation} invocation
