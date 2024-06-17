@@ -103,49 +103,6 @@
             }
         },
         {
-            "description": "Returns a result of input + 1 for Excel.DoubleCellValue.",
-            "id": "PLUSONEFORDOUBLECELLVALUE",
-            "name": "PLUSONEFORDOUBLECELLVALUE",
-            "parameters": [
-                {
-                    "name": "input",
-                    "type": "doublecellvalue"
-                }
-            ],
-            "result": {}
-        },
-        {
-            "description": "Returns a result of input + 1 for Excel.FormattedNumberCellValue.",
-            "id": "PLUSONEFORFORMATTEDNUMBERCELLVALUE",
-            "name": "PLUSONEFORFORMATTEDNUMBERCELLVALUE",
-            "parameters": [
-                {
-                    "name": "input",
-                    "type": "formattednumbercellvalue"
-                }
-            ],
-            "result": {}
-        },
-        {
-            "description": "Streaming function that returns an entity every interval seconds.",
-            "id": "TESTSTREAMING",
-            "name": "TESTSTREAMING",
-            "options": {
-                "stream": true
-            },
-            "parameters": [
-                {
-                    "name": "dependency",
-                    "type": "any"
-                },
-                {
-                    "name": "interval",
-                    "type": "number"
-                }
-            ],
-            "result": {}
-        },
-        {
             "id": "TESTREPEATINGPARAMETER",
             "name": "TESTREPEATINGPARAMETER",
             "options": {
