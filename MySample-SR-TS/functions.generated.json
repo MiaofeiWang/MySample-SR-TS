@@ -1,6 +1,5 @@
 {
     "allowCustomDataForDataTypeAny": true,
-    "allowErrorForDataTypeAny": true,
     "functions": [
         {
             "description": "Adds two numbers.",
@@ -102,19 +101,6 @@
             "result": {
                 "type": "number"
             }
-        },
-        {
-            "description": "Returns a result of input + 1 for Excel.DoubleCellValue.",
-            "id": "PLUSONEFORDOUBLECELLVALUE",
-            "name": "PLUSONEFORDOUBLECELLVALUE",
-            "parameters": [
-                {
-                    "name": "input",
-                    "type": "any",
-                    "cellValueType": "doublecellvalue"
-                }
-            ],
-            "result": {}
         },
         {
             "description": "Streaming function that returns an entity every interval seconds.",
@@ -274,9 +260,7 @@
                 "stream": true
             },
             "parameters": [],
-            "result": {
-                "dimonsionality": "scalar"
-            }
+            "result": {}
         },
         {
             "description": "Get a simple linked entity with a random ID.",
