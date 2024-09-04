@@ -139,6 +139,15 @@
             }
         },
         {
+            "description": "This function will call the write API to write \"Hello\" to A1.",
+            "id": "TESTCALLWRITEAPI",
+            "name": "TESTCALLWRITEAPI",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "Simulate latency and return the number in millisecond.",
             "id": "RETURNAFTERASYNCLATENCY",
             "name": "RETURNAFTERASYNCLATENCY",

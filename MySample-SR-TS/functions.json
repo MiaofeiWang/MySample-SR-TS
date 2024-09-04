@@ -313,6 +313,15 @@
                 }
             ],
             "result": {}
+        },
+        {
+            "description": "This function will call the write API to write \"Hello\" to A1.",
+            "id": "TESTCALLWRITEAPI",
+            "name": "TESTCALLWRITEAPI",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
