@@ -60,7 +60,7 @@ module.exports = async (env, options) => {
     },
     plugins: [
       new CustomFunctionsMetadataPlugin({
-        output: "functions.json",
+        output: "functions.generated.json",
         input: [
           "./src/functions/functions.ts",
           "./src/functions/sampleLinkedEntity.ts",
@@ -76,6 +76,10 @@ module.exports = async (env, options) => {
           {
             from: "assets/*",
             to: "assets/[name][ext][query]",
+          },
+          {
+            from: "src/functions/functions.json",
+            to: "functions.json",
           },
           {
             from: "manifest*.xml",

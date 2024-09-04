@@ -1,0 +1,327 @@
+{
+    "allowCustomDataForDataTypeAny": true,
+    "allowErrorForDataTypeAny": true,
+    "functions": [
+        {
+            "description": "Adds two numbers.",
+            "id": "ADD",
+            "name": "ADD",
+            "parameters": [
+                {
+                    "description": "First number",
+                    "name": "first",
+                    "type": "number"
+                },
+                {
+                    "description": "Second number",
+                    "name": "second",
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Writes a message to console.log().",
+            "id": "LOG",
+            "name": "LOG",
+            "parameters": [
+                {
+                    "description": "String to write.",
+                    "name": "message",
+                    "type": "string"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Echo the input. If input is null, return \"null\".",
+            "id": "ECHO",
+            "name": "ECHO",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Creates a formatted number.",
+            "id": "CREATEFORMATTEDNUMBER",
+            "name": "CREATEFORMATTEDNUMBER",
+            "parameters": [
+                {
+                    "name": "value",
+                    "type": "any"
+                },
+                {
+                    "name": "format",
+                    "type": "string"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Creates a PwM for number.",
+            "id": "CREATEPWMFORNUMBER",
+            "name": "CREATEPWMFORNUMBER",
+            "parameters": [
+                {
+                    "name": "value",
+                    "type": "number"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Returns a result of input + 1 for type 'any'.",
+            "id": "PLUSONEFORANY",
+            "name": "PLUSONEFORANY",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Returns a result of input + 1 for number.",
+            "id": "PLUSONEFORNUMBER",
+            "name": "PLUSONEFORNUMBER",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Returns a result of input + 1 for Excel.DoubleCellValue.",
+            "id": "PLUSONEFORDOUBLECELLVALUE",
+            "name": "PLUSONEFORDOUBLECELLVALUE",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "any",
+                    "cellValueType": "doublecellvalue"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Streaming function that returns an entity every interval seconds.",
+            "id": "TESTSTREAMING",
+            "name": "TESTSTREAMING",
+            "options": {
+                "stream": true
+            },
+            "parameters": [
+                {
+                    "name": "dependency",
+                    "type": "any"
+                },
+                {
+                    "name": "interval",
+                    "type": "number"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "id": "TESTREPEATINGPARAMETER",
+            "name": "TESTREPEATINGPARAMETER",
+            "options": {
+                "requiresParameterAddresses": true
+            },
+            "parameters": [
+                {
+                    "name": "input",
+                    "repeating": true,
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Simulate latency and return the number in millisecond.",
+            "id": "RETURNAFTERASYNCLATENCY",
+            "name": "RETURNAFTERASYNCLATENCY",
+            "parameters": [
+                {
+                    "description": "Average latency in millisecond",
+                    "name": "latency",
+                    "type": "number"
+                },
+                {
+                    "description": "Only for triggering chained calc.",
+                    "name": "dependency",
+                    "optional": true,
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Return latency in millisecond after sleep.",
+            "id": "RETURNAFTERSLEEP",
+            "name": "RETURNAFTERSLEEP",
+            "parameters": [
+                {
+                    "description": "Time to sleep in millisecond before return.",
+                    "name": "latency",
+                    "type": "number"
+                },
+                {
+                    "description": "Only for triggering chained calc.",
+                    "name": "dependency",
+                    "optional": true,
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Returns a simple entity.",
+            "id": "GETSIMPLEENTITY",
+            "name": "GETSIMPLEENTITY",
+            "parameters": [],
+            "result": {}
+        },
+        {
+            "description": "Returns a simple entity.",
+            "id": "GETRANDOMENTITYAFTERASYNCLATENTCY",
+            "name": "GETRANDOMENTITYAFTERASYNCLATENTCY",
+            "parameters": [
+                {
+                    "description": "Latency in millisecond.",
+                    "name": "latency",
+                    "optional": true,
+                    "type": "number"
+                },
+                {
+                    "description": "Only for triggering chained calc.",
+                    "name": "dependency",
+                    "optional": true,
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Returns a rich error. Error type: https://learn.microsoft.com/en-us/office/dev/add-ins/excel/excel-data-types-concepts#improved-error-support",
+            "id": "GETRICHERROR",
+            "name": "GETRICHERROR",
+            "parameters": [
+                {
+                    "name": "errorTypeString",
+                    "optional": true,
+                    "type": "string"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "id": "GETCFERROR",
+            "name": "GETCFERROR",
+            "parameters": [
+                {
+                    "description": "Error type",
+                    "name": "errorTypeString",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "Whether to include message",
+                    "name": "noMessage",
+                    "optional": true,
+                    "type": "boolean"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "id": "GETCFERRORMESSAGE",
+            "name": "GETCFERRORMESSAGE",
+            "parameters": [
+                {
+                    "description": "Input value",
+                    "name": "input",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "id": "TESTFORMATTEDNUMBERSTREAMING",
+            "name": "TESTFORMATTEDNUMBERSTREAMING",
+            "options": {
+                "stream": true
+            },
+            "parameters": [],
+            "result": {
+                "dimonsionality": "scalar"
+            }
+        },
+        {
+            "description": "Get a simple linked entity with a random ID.",
+            "id": "GETRANDOMLINKEDENTITY",
+            "name": "GETRANDOMLINKEDENTITY",
+            "parameters": [],
+            "result": {}
+        },
+        {
+            "description": "Get a linked entity for a product by its ID.",
+            "id": "GETLINKEDENTITYBYID",
+            "name": "GETLINKEDENTITYBYID",
+            "parameters": [
+                {
+                    "description": "Unique id of the product.",
+                    "name": "productId",
+                    "type": "string"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Custom function which acts as the \"service\" or the data provider for a `LinkedEntityDataDomain`, that is\ncalled on demand by Excel to resolve/refresh `LinkedEntityCellValue`s of that `LinkedEntityDataDomain`.",
+            "id": "PRODUCTLINKEDENTITYSERVICE",
+            "name": "PRODUCTLINKEDENTITYSERVICE",
+            "options": {
+                "linkedEntityDataProvider": true
+            },
+            "parameters": [
+                {
+                    "description": "Unique `LinkedEntityId` of the `LinkedEntityCellValue`s which is being\r\nrequested for resolution/refresh.",
+                    "name": "linkedEntityId",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "This function will call the write API to write \"Hello\" to A1.",
+            "id": "TESTCALLWRITEAPI",
+            "name": "TESTCALLWRITEAPI",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        }
+    ]
+}

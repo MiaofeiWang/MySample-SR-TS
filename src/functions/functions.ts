@@ -198,6 +198,22 @@ async function testRepeatingParameter(input: any[], invocation: CustomFunctions.
   return result;
 }
 
+/**
+ * This function will call the write API to write "Hello" to A1.
+ * @customfunction
+ * @returns {string} 
+ */
+async function testCallWriteAPI() {
+  Excel.run(async (context) => {
+    let sheet = context.workbook.worksheets.getActiveWorksheet();
+    let range = sheet.getRange("A1");
+    range.values = [["Hello"]];
+    await context.sync();
+  });
+
+  return "Write API called";
+}
+
 
 /**
  * Simulate latency and return the number in millisecond.
@@ -392,4 +408,82 @@ function getRichError(errorTypeString?: string) {
   }
 
   return error;
+}
+
+/**
+ * @customfunction
+ * @param errorTypeString Error type
+ * @param noMessage Whether to include message
+ * @returns A custom function error.
+ */
+function getCFError(errorTypeString?: string, noMessage?: boolean) {
+  console.log(`Start getCFError`);
+  let errorType = CustomFunctions.ErrorCode.notAvailable;
+  switch(errorTypeString.toLowerCase()) {
+    case "divisionbyzero":
+      errorType = CustomFunctions.ErrorCode.divisionByZero;
+      break;
+    case "invalidvalue":
+      errorType = CustomFunctions.ErrorCode.invalidValue;
+      break;
+    case "notavailable":
+      errorType = CustomFunctions.ErrorCode.notAvailable;
+      break;
+    default:
+      // default NA error
+      break;
+  }
+
+  if (noMessage) {
+    return new CustomFunctions.Error(errorType);
+  } else {
+    let message = "Customized CF error message";
+    return new CustomFunctions.Error(errorType, message);
+  }
+}
+
+/**
+ * @customfunction
+ * @param {any} input Input value
+ * @returns {string} Error message
+ */
+function getCFErrorMessage(input: any) {
+  if (input.type == CustomFunctions.Error) {
+    return input.message;
+  }
+  else if (input.type == Excel.CellValueType.error) {
+    return "Not CF error but Excel error";
+  }
+  else {
+    return "Not a CF error";
+  }
+}
+
+export function getRandom0to99() {
+  return Math.floor(Math.random() * 100);
+}
+
+/**
+ * @customfunction
+ * @param {CustomFunctions.StreamingInvocation<any>} invocation 
+ */
+function testFormattedNumberStreaming(invocation: CustomFunctions.StreamingInvocation<any>): void {
+  let format = "0.0";
+  let value = 0;
+  const result = {
+    basicValue: getRandom0to99(),
+    numberFormat: `${format}`,
+    type: Excel.CellValueType.formattedNumber,
+  };
+  invocation.setResult(result);
+
+  const timeoutId = setInterval(async () => {
+    value++;
+    const now = {
+      basicValue: getRandom0to99(),
+      numberFormat: `${format}`,
+      type: Excel.CellValueType.formattedNumber,
+    };
+    invocation.setResult(now);
+  }, 2000);
 }
