@@ -117,8 +117,8 @@ function plusOneForNumber(input: number): number {
 }
 
 /**
- * [NOTE] No customfunction tag as the new types will lead to error.
  * Returns a result of input + 1 for Excel.DoubleCellValue.
+ * @customfunction
  * @param {Excel.DoubleCellValue} input
  * @returns {Excel.DoubleCellValue}
  */
@@ -128,8 +128,8 @@ function plusOneForDoubleCellValue(input: Excel.DoubleCellValue): Excel.DoubleCe
 }
 
 /**
- * [NOTE] No customfunction tag as the new types will lead to error.
  * Returns a result of input + 1 for Excel.FormattedNumberCellValue.
+ * @customfunction
  * @param {Excel.FormattedNumberCellValue} input
  * @returns {Excel.FormattedNumberCellValue}
  */
