@@ -29,6 +29,33 @@
         <h2 class="ms-font-xl">Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> your add-in to see app body.</h2>
     </section>
     <main id="app-body" class="ms-welcome__main" style="display: none;">
+        <!-- Function Management Section -->
+        <div class="function-management">
+            <h3 class="ms-font-l">Function Management</h3>
+            
+            <!-- First textbox and button -->
+            <div class="input-group">
+                <label class="ms-font-m">Functions to Show:</label>
+                <div class="input-button-pair">
+                    <input type="text" id="showFunctionsInput" class="ms-TextField-field" placeholder="Enter function names separated by commas" />
+                    <button id="showFunctionsBtn" class="ms-Button ms-Button--primary">
+                        <span class="ms-Button-label">Show Functions</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Second textbox and button -->
+            <div class="input-group">
+                <label class="ms-font-m">Functions to Hide:</label>
+                <div class="input-button-pair">
+                    <input type="text" id="hideFunctionsInput" class="ms-TextField-field" placeholder="Enter function names separated by commas" />
+                    <button id="hideFunctionsBtn" class="ms-Button ms-Button--primary">
+                        <span class="ms-Button-label">Hide Functions</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <h2 class="ms-font-xl"> Discover what Office Add-ins can do for you today! </h2>
         <ul class="ms-List ms-welcome__features">
             <li class="ms-ListItem">

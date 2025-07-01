@@ -16,6 +16,10 @@
   document.getElementById("app-body").style.display = "flex";
   document.getElementById("run").onclick = registerLinkedEntityDomains;
 
+  // Add event listeners for the function management buttons
+  document.getElementById("showFunctionsBtn").onclick = showFunctions;
+  document.getElementById("hideFunctionsBtn").onclick = hideFunctions;
+
   await registerLinkedEntityDomains();
 })();
 
@@ -124,3 +128,52 @@ export async function registerLinkedEntityDomains() {
 }
 
 /// Linked entity samples above
+
+/**
+ * Function to handle showing functions based on comma-separated input
+ */
+export async function showFunctions() {
+  try {
+    const input = (document.getElementById("showFunctionsInput") as HTMLInputElement).value;
+    const functionNames = parseFunctionNames(input);
+    
+    console.log("Functions to show:", functionNames);
+
+    await Excel.CustomFunctionManager.setVisibility({show: functionNames, hide: []});
+    
+  } catch (error) {
+    console.error("Error in showFunctions:", error);
+  }
+}
+
+/**
+ * Function to handle hiding functions based on comma-separated input
+ */
+export async function hideFunctions() {
+  try {
+    const input = (document.getElementById("hideFunctionsInput") as HTMLInputElement).value;
+    const functionNames = parseFunctionNames(input);
+    
+    console.log("Functions to hide:", functionNames);
+
+    await Excel.CustomFunctionManager.setVisibility({show: [], hide: functionNames});
+  } catch (error) {
+    console.error("Error in hideFunctions:", error);
+  }
+}
+
+/**
+ * Helper function to parse comma-separated function names
+ * @param input - Comma-separated string of function names
+ * @returns Array of trimmed function names
+ */
+function parseFunctionNames(input: string): string[] {
+  if (!input || input.trim() === "") {
+    return [];
+  }
+  
+  return input
+    .split(",")
+    .map(name => name.trim())
+    .filter(name => name.length > 0);
+}
