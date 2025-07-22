@@ -2,6 +2,13 @@
     "allowCustomDataForDataTypeAny": true,
     "functions": [
         {
+            "description": "A test function for metadata update.",
+            "id": "TESTFUNCTION",
+            "name": "TESTFUNCTION",
+            "parameters": [],
+            "result": {}
+        },
+        {
             "description": "Adds two numbers.",
             "id": "ADD",
             "name": "ADD",

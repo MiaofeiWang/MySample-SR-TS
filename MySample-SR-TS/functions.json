@@ -3,6 +3,42 @@
     "allowErrorForDataTypeAny": true,
     "functions": [
         {
+            "description": "Test function 1",
+            "id": "TESTFUNCTION",
+            "name": "TESTFUNCTION1",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Test function 2",
+            "id": "TESTFUNCTION",
+            "name": "TESTFUNCTION2",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Test function 3",
+            "id": "TESTFUNCTION",
+            "name": "TESTFUNCTION3",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Test function 4",
+            "id": "TESTFUNCTION",
+            "name": "TESTFUNCTION4",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "Adds two numbers.",
             "id": "ADD",
             "name": "ADD",
