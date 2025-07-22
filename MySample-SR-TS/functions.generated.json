@@ -3,8 +3,29 @@
     "functions": [
         {
             "description": "A test function for metadata update.",
-            "id": "TESTFUNCTION",
-            "name": "TESTFUNCTION",
+            "id": "TESTFUNCTION1",
+            "name": "TESTFUNCTION1",
+            "parameters": [],
+            "result": {}
+        },
+        {
+            "description": "A test function for metadata update.",
+            "id": "TESTFUNCTION2",
+            "name": "TESTFUNCTION2",
+            "parameters": [],
+            "result": {}
+        },
+        {
+            "description": "A test function for metadata update.",
+            "id": "TESTFUNCTION3",
+            "name": "TESTFUNCTION3",
+            "parameters": [],
+            "result": {}
+        },
+        {
+            "description": "A test function for metadata update.",
+            "id": "TESTFUNCTION4",
+            "name": "TESTFUNCTION4",
             "parameters": [],
             "result": {}
         },

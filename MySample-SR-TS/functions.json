@@ -4,7 +4,7 @@
     "functions": [
         {
             "description": "Test function 1",
-            "id": "TESTFUNCTION",
+            "id": "TESTFUNCTION1",
             "name": "TESTFUNCTION1",
             "parameters": [],
             "result": {
@@ -13,7 +13,7 @@
         },
         {
             "description": "Test function 2",
-            "id": "TESTFUNCTION",
+            "id": "TESTFUNCTION2",
             "name": "TESTFUNCTION2",
             "parameters": [],
             "result": {
@@ -22,7 +22,7 @@
         },
         {
             "description": "Test function 3",
-            "id": "TESTFUNCTION",
+            "id": "TESTFUNCTION3",
             "name": "TESTFUNCTION3",
             "parameters": [],
             "result": {
@@ -31,7 +31,7 @@
         },
         {
             "description": "Test function 4",
-            "id": "TESTFUNCTION",
+            "id": "TESTFUNCTION4",
             "name": "TESTFUNCTION4",
             "parameters": [],
             "result": {
