@@ -487,3 +487,207 @@ function testFormattedNumberStreaming(invocation: CustomFunctions.StreamingInvoc
     invocation.setResult(now);
   }, 2000);
 }
+
+/**
+ * Filters data based on date range. Accepts various input types:
+ * - String dates (yyyy-mm-dd format)
+ * - Excel date serial numbers
+ * - Relative day numbers (negative for past, positive for future)
+ * @customfunction
+ * @param {any} startInput - Start date (string, Excel date, or relative days)
+ * @param {any} endInput - End date (string, Excel date, or relative days)
+ * @returns {string} Message showing the filtered date range
+ */
+export function filterDataByDateRange(startInput: any, endInput: any): string {
+  try {
+    // Convert inputs to date strings
+    const startDate = convertToDateString(startInput);
+    const endDate = convertToDateString(endInput);
+    
+    // Call mock method to get data for this time period
+    return mockGetDataInTimeRange(startDate, endDate);
+  } catch (error) {
+    return `Error: ${error.message}`;
+  }
+}
+
+/**
+ * Converts various input types to yyyy-mm-dd date string
+ * @param {any} input - String, number (Excel date or relative days), or Excel date object
+ * @returns {string} Date in yyyy-mm-dd format
+ */
+function convertToDateString(input: any): string {
+  if (input == null) {
+    throw new Error("Input cannot be null or undefined");
+  }
+
+  // Handle string input - try to parse various date formats
+  if (typeof input === "string") {
+    const parsedDate = parseFlexibleDateString(input);
+    if (parsedDate) {
+      return formatDateToYYYYMMDD(parsedDate);
+    } else {
+      throw new Error("Unable to parse date string. Supported formats: yyyy-mm-dd, yyyy/mm/dd, mm/dd/yyyy, dd/mm/yyyy");
+    }
+  }
+
+  // Handle number input
+  if (typeof input === "number") {
+    // Calculate Excel serial date range for past 20 years to future 20 years
+    // Today (September 10, 2025) is approximately serial 45903
+    // 20 years ago (2005) ≈ serial 38718
+    // 20 years from now (2045) ≈ serial 53088
+    const minExcelDate = 38718; // Approximately January 1, 2005
+    const maxExcelDate = 53088; // Approximately December 31, 2045
+    
+    // Check if it's a relative day number (typically small numbers, positive or negative)
+    if (input >= -365 && input <= 365) {
+      // Treat as relative days from today
+      return getRelativeDate(input);
+    } else if (input >= minExcelDate && input <= maxExcelDate) {
+      // Treat as Excel date serial number within valid range
+      return convertExcelDateToYYYYMMDD(input);
+    } else {
+      throw new Error(`Number input must be either relative days (-365 to 365) or Excel date serial (${minExcelDate} to ${maxExcelDate} for years 2005-2045)`);
+    }
+  }
+
+  // Handle Excel date objects
+  if (typeof input === "object" && input.type === Excel.CellValueType.double) {
+    const dateValue = input.basicValue;
+    const minExcelDate = 38718; // Approximately January 1, 2005
+    const maxExcelDate = 53088; // Approximately December 31, 2045
+    
+    if (typeof dateValue === "number" && dateValue >= minExcelDate && dateValue <= maxExcelDate) {
+      return convertExcelDateToYYYYMMDD(dateValue);
+    }
+  }
+
+  throw new Error("Unsupported input type");
+}
+
+/**
+ * Parses flexible date string formats
+ * @param {string} dateStr - Date string in various formats
+ * @returns {Date | null} Parsed Date object or null if parsing fails
+ */
+function parseFlexibleDateString(dateStr: string): Date | null {
+  // Remove extra whitespace
+  const cleanStr = dateStr.trim();
+  
+  // Try different date patterns
+  const patterns = [
+    // yyyy-mm-dd or yyyy/mm/dd
+    /^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/,
+    // mm/dd/yyyy or mm-dd-yyyy
+    /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/,
+    // dd/mm/yyyy or dd-mm-yyyy (European format)
+    /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/
+  ];
+
+  // Pattern 1: yyyy-mm-dd or yyyy/mm/dd
+  let match = cleanStr.match(patterns[0]);
+  if (match) {
+    const year = parseInt(match[1]);
+    const month = parseInt(match[2]) - 1; // JavaScript months are 0-indexed
+    const day = parseInt(match[3]);
+    const date = new Date(year, month, day);
+    if (isValidDate(date, year, month + 1, day)) {
+      return date;
+    }
+  }
+
+  // Pattern 2: mm/dd/yyyy (US format)
+  match = cleanStr.match(patterns[1]);
+  if (match) {
+    const month = parseInt(match[1]) - 1; // JavaScript months are 0-indexed
+    const day = parseInt(match[2]);
+    const year = parseInt(match[3]);
+    const date = new Date(year, month, day);
+    if (isValidDate(date, year, month + 1, day)) {
+      return date;
+    }
+  }
+
+  // Try JavaScript's native Date parsing as fallback
+  const nativeDate = new Date(cleanStr);
+  if (!isNaN(nativeDate.getTime())) {
+    return nativeDate;
+  }
+
+  return null;
+}
+
+/**
+ * Validates if the created date matches the input values
+ * @param {Date} date - The created Date object
+ * @param {number} year - Expected year
+ * @param {number} month - Expected month (1-12)
+ * @param {number} day - Expected day
+ * @returns {boolean} True if date is valid and matches input
+ */
+function isValidDate(date: Date, year: number, month: number, day: number): boolean {
+  return date.getFullYear() === year && 
+         date.getMonth() === month - 1 && 
+         date.getDate() === day &&
+         !isNaN(date.getTime());
+}
+
+/**
+ * Formats Date object to yyyy-mm-dd string
+ * @param {Date} date - Date object to format
+ * @returns {string} Date in yyyy-mm-dd format
+ */
+function formatDateToYYYYMMDD(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Converts Excel serial date number to yyyy-mm-dd format
+ * @param {number} excelDate - Excel serial date number
+ * @returns {string} Date in yyyy-mm-dd format
+ */
+function convertExcelDateToYYYYMMDD(excelDate: number): string {
+  // Excel's epoch starts at 1900-01-01, but there's a leap year bug
+  // Excel incorrectly treats 1900 as a leap year
+  const excelEpoch = new Date(1899, 11, 30); // December 30, 1899
+  
+  // Convert Excel serial number to milliseconds and add to epoch
+  const jsDate = new Date(excelEpoch.getTime() + (excelDate * 24 * 60 * 60 * 1000));
+  
+  // Format as yyyy-mm-dd
+  const year = jsDate.getFullYear();
+  const month = String(jsDate.getMonth() + 1).padStart(2, '0');
+  const day = String(jsDate.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Gets date relative to today
+ * @param {number} relativeDays - Number of days relative to today (negative for past, positive for future)
+ * @returns {string} Date in yyyy-mm-dd format
+ */
+function getRelativeDate(relativeDays: number): string {
+  const today = new Date();
+  const targetDate = new Date(today.getTime() + (relativeDays * 24 * 60 * 60 * 1000));
+  
+  const year = targetDate.getFullYear();
+  const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+  const day = String(targetDate.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Mock method to simulate getting data in a time range
+ * @param {string} startDate - Start date in yyyy-mm-dd format
+ * @param {string} endDate - End date in yyyy-mm-dd format
+ * @returns {string} Simple string showing the date range
+ */
+function mockGetDataInTimeRange(startDate: string, endDate: string): string {
+  return `Filtering data from ${startDate} to ${endDate}`;
+}

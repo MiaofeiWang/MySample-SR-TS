@@ -322,6 +322,26 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "Filters data based on date range. Accepts various input types: String dates (yyyy-mm-dd), Excel date serial numbers, or relative day numbers.",
+            "id": "FILTERDATABYDATERANGE",
+            "name": "FILTERDATABYDATERANGE",
+            "parameters": [
+                {
+                    "description": "Start date (string, Excel date, or relative days)",
+                    "name": "startInput",
+                    "type": "any"
+                },
+                {
+                    "description": "End date (string, Excel date, or relative days)",
+                    "name": "endInput",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }

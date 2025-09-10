@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OfficeDev/Excel-Custom-Functions.git"
+    "url": "https://github.com/MiaofeiWang/MySample-SR-TS.git"
   },
   "license": "MIT",
   "engines": {
-    "node": ">=16 <19",
+    "node": ">=16 <23",
     "npm": ">=7 <11"
   },
   "scripts": {
