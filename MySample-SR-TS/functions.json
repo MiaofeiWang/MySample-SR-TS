@@ -3,33 +3,6 @@
     "allowErrorForDataTypeAny": true,
     "functions": [
         {
-            "description": "Test function 1",
-            "id": "TESTFUNCTION1",
-            "name": "TESTFUNCTION1",
-            "parameters": [],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "Test function 2",
-            "id": "TESTFUNCTION2",
-            "name": "TESTFUNCTION2",
-            "parameters": [],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "Test function 3",
-            "id": "TESTFUNCTION3",
-            "name": "TESTFUNCTION3",
-            "parameters": [],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
             "description": "Adds two numbers.",
             "id": "ADD",
             "name": "ADD",
@@ -346,6 +319,26 @@
             "id": "TESTCALLWRITEAPI",
             "name": "TESTCALLWRITEAPI",
             "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Filters data based on date range. Accepts various input types: String dates (yyyy-mm-dd), Excel date serial numbers, or relative day numbers.",
+            "id": "FILTERDATABYDATERANGE",
+            "name": "FILTERDATABYDATERANGE",
+            "parameters": [
+                {
+                    "description": "Start date (string, Excel date, or relative days)",
+                    "name": "startInput",
+                    "type": "any"
+                },
+                {
+                    "description": "End date (string, Excel date, or relative days)",
+                    "name": "endInput",
+                    "type": "any"
+                }
+            ],
             "result": {
                 "type": "string"
             }

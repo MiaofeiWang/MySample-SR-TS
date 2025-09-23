@@ -2,34 +2,6 @@
     "allowCustomDataForDataTypeAny": true,
     "functions": [
         {
-            "description": "A test function for metadata update.",
-            "id": "TESTFUNCTION1",
-            "name": "TESTFUNCTION1",
-            "parameters": [],
-            "result": {}
-        },
-        {
-            "description": "A test function for metadata update.",
-            "id": "TESTFUNCTION2",
-            "name": "TESTFUNCTION2",
-            "parameters": [],
-            "result": {}
-        },
-        {
-            "description": "A test function for metadata update.",
-            "id": "TESTFUNCTION3",
-            "name": "TESTFUNCTION3",
-            "parameters": [],
-            "result": {}
-        },
-        {
-            "description": "A test function for metadata update.",
-            "id": "TESTFUNCTION4",
-            "name": "TESTFUNCTION4",
-            "parameters": [],
-            "result": {}
-        },
-        {
             "description": "Adds two numbers.",
             "id": "ADD",
             "name": "ADD",
@@ -322,6 +294,26 @@
             },
             "parameters": [],
             "result": {}
+        },
+        {
+            "description": "Filters data based on date range. Accepts various input types:\n- String dates (yyyy-mm-dd format)\n- Excel date serial numbers\n- Relative day numbers (negative for past, positive for future)",
+            "id": "FILTERDATABYDATERANGE",
+            "name": "FILTERDATABYDATERANGE",
+            "parameters": [
+                {
+                    "description": "Start date (string, Excel date, or relative days)",
+                    "name": "startInput",
+                    "type": "any"
+                },
+                {
+                    "description": "End date (string, Excel date, or relative days)",
+                    "name": "endInput",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         },
         {
             "description": "Get a simple linked entity with a random ID.",
