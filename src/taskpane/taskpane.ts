@@ -22,6 +22,9 @@
   
   // Add event listener for the range reader button
   document.getElementById("getRangeBtn").onclick = getRangeValues;
+  
+  // Add event listener for the spill error test button
+  document.getElementById("testSpillErrorBtn").onclick = testSpillErrorDetection;
 
   await registerLinkedEntityDomains();
 })();
@@ -239,5 +242,143 @@ export async function getRangeValues() {
     // Re-enable button
     button.disabled = false;
     button.textContent = "Get Range Values (Sheet1!A1:B2)";
+  }
+}
+
+/**
+ * Helper function to get worksheet - mocks the getWorksheet function from your code
+ */
+async function getWorksheet(worksheetName: string, { context }: { context: Excel.RequestContext }): Promise<Excel.Worksheet> {
+  let worksheet: Excel.Worksheet;
+  
+  try {
+    // Try to get existing worksheet
+    worksheet = context.workbook.worksheets.getItem(worksheetName);
+  } catch {
+    // If worksheet doesn't exist, create it
+    worksheet = context.workbook.worksheets.add(worksheetName);
+  }
+  
+  // Sync to ensure worksheet is available
+  await context.sync();
+  return worksheet;
+}
+
+/**
+ * Function to mock the spill error detection behavior that sometimes fails
+ * This reproduces the code snippet you provided
+ */
+export async function testSpillErrorDetection() {
+  const outputElement = document.getElementById("spillErrorOutput");
+  const button = document.getElementById("testSpillErrorBtn") as HTMLButtonElement;
+  const addressInput = document.getElementById("testCellInput") as HTMLInputElement;
+  const waitDurationInput = document.getElementById("waitDurationInput") as HTMLInputElement;
+  
+  const address = addressInput.value || "A1";
+  const worksheetName = "Sheet1";
+  const waitDuration = parseInt(waitDurationInput.value) || 0;
+  
+  try {
+    // Disable button and show loading state
+    button.disabled = true;
+    button.textContent = "Testing...";
+    
+    if (outputElement) {
+      outputElement.textContent = "Starting spill error detection test...";
+    }
+
+    // Mock the invokeExcelRun behavior
+    await Excel.run(async (context) => {
+      if (outputElement) {
+        outputElement.textContent = `Getting worksheet: ${worksheetName}...`;
+      }
+
+      const worksheet = await getWorksheet(worksheetName, { context }); // syncs inside
+
+      if (outputElement) {
+        outputElement.textContent = `Getting range: ${address}...`;
+      }
+
+      const cellRange = worksheet.getRange(address);
+
+      if (outputElement) {
+        outputElement.textContent = `Checking for spill parent range...`;
+      }
+
+      const cellSpillParentRange = cellRange.getSpillParentOrNullObject();
+
+      await context.sync();
+
+      // Wait asynchronously after the spill parent sync if duration is specified
+      if (waitDuration > 0) {
+        if (outputElement) {
+          outputElement.textContent = `Waiting ${waitDuration} seconds after spill parent sync...`;
+        }
+        await new Promise(resolve => setTimeout(resolve, waitDuration * 1000));
+      }
+
+      /**
+       * If the cell belongs to a spill range and contains an error, attempting to get its error formula range
+       * will return a null object, and we won't check whether it still contains an error later.
+       * Therefore, we need to use the spill parent cell in such cases.
+       */
+      const cellOrSpillParentRange = !cellSpillParentRange.isNullObject
+          ? cellSpillParentRange
+          : cellRange;
+
+      if (outputElement) {
+        const rangeType = !cellSpillParentRange.isNullObject ? "spill parent" : "original cell";
+        outputElement.textContent = `Using ${rangeType} range. Getting special cells with errors...`;
+      }
+
+      const erroredCell = cellOrSpillParentRange.getSpecialCellsOrNullObject(
+          Excel.SpecialCellType.formulas,
+          Excel.SpecialCellValueType.errors
+      );
+
+      erroredCell.load({ address: true });
+
+      if (outputElement) {
+        outputElement.textContent = `Loading errored cell data... (this is where the sync might fail)`;
+      }
+
+      // This is the sync that sometimes throws in your original code
+      await context.sync(); // <--- this sync threw
+
+      // If we get here, the sync succeeded
+      let output = `✅ Test completed successfully!\n`;
+      output += `Original address: ${address}\n`;
+      output += `Wait duration: ${waitDuration} seconds\n`;
+      output += `Has spill parent: ${!cellSpillParentRange.isNullObject}\n`;
+      
+      if (!erroredCell.isNullObject) {
+        output += `Errored cell address: ${erroredCell.address}\n`;
+      } else {
+        output += `No errored cells found\n`;
+      }
+
+      if (outputElement) {
+        outputElement.textContent = output;
+      }
+
+      console.log("Spill error detection test completed successfully");
+
+    });
+
+  } catch (error) {
+    console.error("Error in spill error detection test:", error);
+    if (outputElement) {
+      let errorOutput = `❌ Error occurred during test:\n`;
+      errorOutput += `Error: ${error.message || error}\n`;
+      errorOutput += `Address tested: ${address}\n`;
+      errorOutput += `Worksheet: ${worksheetName}\n`;
+      errorOutput += `Wait duration: ${waitDuration} seconds\n`;
+      errorOutput += `\nThis might be the error you're trying to reproduce!`;
+      outputElement.textContent = errorOutput;
+    }
+  } finally {
+    // Re-enable button
+    button.disabled = false;
+    button.textContent = "Test Spill Error Detection";
   }
 }

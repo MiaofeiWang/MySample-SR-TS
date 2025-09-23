@@ -65,6 +65,27 @@
                 </button>
                 <div id="rangeOutput" class="range-output ms-font-m"></div>
             </div>
+            
+            <!-- Error Reproduction Section -->
+            <div class="input-group">
+                <label class="ms-font-m">Test Cell Address:</label>
+                <div class="input-button-pair">
+                    <input type="text" id="testCellInput" class="ms-TextField-field" placeholder="e.g., A1" value="A1" />
+                    <button id="testSpillErrorBtn" class="ms-Button ms-Button--primary">
+                        <span class="ms-Button-label">Test Spill Error Detection</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label class="ms-font-m">Wait Duration (seconds):</label>
+                <input type="number" id="waitDurationInput" class="ms-TextField-field" placeholder="0" value="0" min="0" max="60" />
+                <small class="ms-font-xs">Wait time after spill parent sync (0 = no wait)</small>
+            </div>
+            
+            <div class="input-group">
+                <div id="spillErrorOutput" class="range-output ms-font-m"></div>
+            </div>
         </div>
 
         <h2 class="ms-font-xl"> Discover what Office Add-ins can do for you today! </h2>
