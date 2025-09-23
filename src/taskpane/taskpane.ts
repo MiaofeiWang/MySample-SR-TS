@@ -19,6 +19,9 @@
   // Add event listeners for the function management buttons
   document.getElementById("showFunctionsBtn").onclick = showFunctions;
   document.getElementById("hideFunctionsBtn").onclick = hideFunctions;
+  
+  // Add event listener for the range reader button
+  document.getElementById("getRangeBtn").onclick = getRangeValues;
 
   await registerLinkedEntityDomains();
 })();
@@ -176,4 +179,65 @@ function parseFunctionNames(input: string): string[] {
     .split(",")
     .map(name => name.trim())
     .filter(name => name.length > 0);
+}
+
+/**
+ * Function to get range values from Sheet1!A1:B2, wait 10 seconds, and display the values
+ */
+export async function getRangeValues() {
+  const outputElement = document.getElementById("rangeOutput");
+  const button = document.getElementById("getRangeBtn") as HTMLButtonElement;
+  
+  try {
+    // Disable button and show loading state
+    button.disabled = true;
+    button.textContent = "Getting range...";
+    
+    if (outputElement) {
+      outputElement.textContent = "Getting range object...";
+    }
+
+    await Excel.run(async (context) => {
+      // Get the range Sheet1!A1:B2
+      const range = context.workbook.worksheets.getItem("Sheet1").getRange("A1:B2");
+      
+      // Load the values property of the range
+      range.load("values, address");
+
+      await context.sync();
+
+      if (outputElement) {
+        outputElement.textContent = `Range ${range.address} retrieved. Waiting 10 seconds...`;
+      }
+
+      // Wait for 10 seconds asynchronously
+      await new Promise(resolve => setTimeout(resolve, 10000));
+
+      // Display the range values
+      const values = range.values;
+      let output = `Range: ${range.address}\nValues:\n`;
+      
+      for (let i = 0; i < values.length; i++) {
+        for (let j = 0; j < values[i].length; j++) {
+          output += `[${i},${j}]: ${values[i][j]}\n`;
+        }
+      }
+
+      if (outputElement) {
+        outputElement.textContent = output;
+      }
+
+      console.log("Range values:", values);
+    });
+
+  } catch (error) {
+    console.error("Error getting range values:", error);
+    if (outputElement) {
+      outputElement.textContent = `Error: ${error.message || error}`;
+    }
+  } finally {
+    // Re-enable button
+    button.disabled = false;
+    button.textContent = "Get Range Values (Sheet1!A1:B2)";
+  }
 }

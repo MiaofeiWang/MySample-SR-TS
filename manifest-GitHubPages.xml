@@ -11,6 +11,7 @@
   <SupportUrl DefaultValue="https://www.contoso.com/help"/>
   <AppDomains>
     <AppDomain>https://miaofeiwang.github.io</AppDomain>
+    <AppDomain>https://www.microsoft.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook"/>
@@ -92,6 +93,21 @@
                     <SourceLocation resid="Taskpane.Url"/>
                   </Action>
                 </Control>
+                <Control xsi:type="Button" id="DialogButton">
+                  <Label resid="DialogButton.Label"/>
+                  <Supertip>
+                    <Title resid="DialogButton.Label"/>
+                    <Description resid="DialogButton.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16x16"/>
+                    <bt:Image size="32" resid="Icon.32x32"/>
+                    <bt:Image size="80" resid="Icon.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>openDialog</FunctionName>
+                  </Action>
+                </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
@@ -109,6 +125,7 @@
         <bt:Url id="Functions.Metadata.Url" DefaultValue="https://miaofeiwang.github.io/MySample-SR-TS/MySample-SR-TS/functions.json"/>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
         <bt:Url id="Taskpane.Url" DefaultValue="https://miaofeiwang.github.io/MySample-SR-TS/MySample-SR-TS/taskpane.html"/>
+        <bt:Url id="Dialog.Url" DefaultValue="https://www.microsoft.com"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="Functions.Namespace" DefaultValue="MyTSSample"/>
@@ -116,10 +133,12 @@
         <bt:String id="CommandsGroup.Label" DefaultValue="SampleSharedRuntime-TS"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Show Taskpane"/>
         <bt:String id="TaskpaneButton.Label2" DefaultValue="Show Taskpane 2"/>
+        <bt:String id="DialogButton.Label" DefaultValue="Open Dialog"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded succesfully. Go to the HOME tab and click the 'Show Taskpane' button to get started."/>
         <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane"/>
+        <bt:String id="DialogButton.Tooltip" DefaultValue="Click to open a dialog window"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
