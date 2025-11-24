@@ -14,17 +14,15 @@
 
   document.getElementById("sideload-msg").style.display = "none";
   document.getElementById("app-body").style.display = "flex";
-  document.getElementById("run").onclick = registerLinkedEntityDomains;
 
   // Add event listeners for the function management buttons
   document.getElementById("showFunctionsBtn").onclick = showFunctions;
   document.getElementById("hideFunctionsBtn").onclick = hideFunctions;
   
-  // Add event listener for the range reader button
-  document.getElementById("getRangeBtn").onclick = getRangeValues;
-  
-  // Add event listener for the spill error test button
-  document.getElementById("testSpillErrorBtn").onclick = testSpillErrorDetection;
+  // Add event listeners for load behavior buttons
+  document.getElementById("getLoadBehaviorBtn").onclick = getLoadBehavior;
+  document.getElementById("setLoadBehaviorNoneBtn").onclick = () => setLoadBehavior(Office.StartupBehavior.none);
+  document.getElementById("setLoadBehaviorLoadBtn").onclick = () => setLoadBehavior(Office.StartupBehavior.load);
 
   await registerLinkedEntityDomains();
 })();
@@ -185,200 +183,35 @@ function parseFunctionNames(input: string): string[] {
 }
 
 /**
- * Function to get range values from Sheet1!A1:B2, wait 10 seconds, and display the values
+ * Function to get the current load behavior
  */
-export async function getRangeValues() {
-  const outputElement = document.getElementById("rangeOutput");
-  const button = document.getElementById("getRangeBtn") as HTMLButtonElement;
-  
+export async function getLoadBehavior() {
   try {
-    // Disable button and show loading state
-    button.disabled = true;
-    button.textContent = "Getting range...";
-    
-    if (outputElement) {
-      outputElement.textContent = "Getting range object...";
+    const behavior = await Office.addin.getStartupBehavior();
+    const behaviorText = document.getElementById("currentLoadBehavior");
+    if (behaviorText) {
+      behaviorText.innerText = behavior;
     }
-
-    await Excel.run(async (context) => {
-      // Get the range Sheet1!A1:B2
-      const range = context.workbook.worksheets.getItem("Sheet1").getRange("A1:B2");
-      
-      // Load the values property of the range
-      range.load("values, address");
-
-      await context.sync();
-
-      if (outputElement) {
-        outputElement.textContent = `Range ${range.address} retrieved. Waiting 10 seconds...`;
-      }
-
-      // Wait for 10 seconds asynchronously
-      await new Promise(resolve => setTimeout(resolve, 10000));
-
-      // Display the range values
-      const values = range.values;
-      let output = `Range: ${range.address}\nValues:\n`;
-      
-      for (let i = 0; i < values.length; i++) {
-        for (let j = 0; j < values[i].length; j++) {
-          output += `[${i},${j}]: ${values[i][j]}\n`;
-        }
-      }
-
-      if (outputElement) {
-        outputElement.textContent = output;
-      }
-
-      console.log("Range values:", values);
-    });
-
+    console.log(`Current load behavior: ${behavior}`);
   } catch (error) {
-    console.error("Error getting range values:", error);
-    if (outputElement) {
-      outputElement.textContent = `Error: ${error.message || error}`;
+    console.error("Error getting load behavior:", error);
+    const behaviorText = document.getElementById("currentLoadBehavior");
+    if (behaviorText) {
+      behaviorText.innerText = "Error";
     }
-  } finally {
-    // Re-enable button
-    button.disabled = false;
-    button.textContent = "Get Range Values (Sheet1!A1:B2)";
   }
 }
 
 /**
- * Helper function to get worksheet - mocks the getWorksheet function from your code
+ * Function to set the load behavior
+ * @param behavior - The behavior to set (Office.StartupBehavior.none or Office.StartupBehavior.load)
  */
-async function getWorksheet(worksheetName: string, { context }: { context: Excel.RequestContext }): Promise<Excel.Worksheet> {
-  let worksheet: Excel.Worksheet;
-  
+export async function setLoadBehavior(behavior: Office.StartupBehavior) {
   try {
-    // Try to get existing worksheet
-    worksheet = context.workbook.worksheets.getItem(worksheetName);
-  } catch {
-    // If worksheet doesn't exist, create it
-    worksheet = context.workbook.worksheets.add(worksheetName);
-  }
-  
-  // Sync to ensure worksheet is available
-  await context.sync();
-  return worksheet;
-}
-
-/**
- * Function to mock the spill error detection behavior that sometimes fails
- * This reproduces the code snippet you provided
- */
-export async function testSpillErrorDetection() {
-  const outputElement = document.getElementById("spillErrorOutput");
-  const button = document.getElementById("testSpillErrorBtn") as HTMLButtonElement;
-  const addressInput = document.getElementById("testCellInput") as HTMLInputElement;
-  const waitDurationInput = document.getElementById("waitDurationInput") as HTMLInputElement;
-  
-  const address = addressInput.value || "A1";
-  const worksheetName = "Sheet1";
-  const waitDuration = parseInt(waitDurationInput.value) || 0;
-  
-  try {
-    // Disable button and show loading state
-    button.disabled = true;
-    button.textContent = "Testing...";
-    
-    if (outputElement) {
-      outputElement.textContent = "Starting spill error detection test...";
-    }
-
-    // Mock the invokeExcelRun behavior
-    await Excel.run(async (context) => {
-      if (outputElement) {
-        outputElement.textContent = `Getting worksheet: ${worksheetName}...`;
-      }
-
-      const worksheet = await getWorksheet(worksheetName, { context }); // syncs inside
-
-      if (outputElement) {
-        outputElement.textContent = `Getting range: ${address}...`;
-      }
-
-      const cellRange = worksheet.getRange(address);
-
-      if (outputElement) {
-        outputElement.textContent = `Checking for spill parent range...`;
-      }
-
-      const cellSpillParentRange = cellRange.getSpillParentOrNullObject();
-
-      await context.sync();
-
-      // Wait asynchronously after the spill parent sync if duration is specified
-      if (waitDuration > 0) {
-        if (outputElement) {
-          outputElement.textContent = `Waiting ${waitDuration} seconds after spill parent sync...`;
-        }
-        await new Promise(resolve => setTimeout(resolve, waitDuration * 1000));
-      }
-
-      /**
-       * If the cell belongs to a spill range and contains an error, attempting to get its error formula range
-       * will return a null object, and we won't check whether it still contains an error later.
-       * Therefore, we need to use the spill parent cell in such cases.
-       */
-      const cellOrSpillParentRange = !cellSpillParentRange.isNullObject
-          ? cellSpillParentRange
-          : cellRange;
-
-      if (outputElement) {
-        const rangeType = !cellSpillParentRange.isNullObject ? "spill parent" : "original cell";
-        outputElement.textContent = `Using ${rangeType} range. Getting special cells with errors...`;
-      }
-
-      const erroredCell = cellOrSpillParentRange.getSpecialCellsOrNullObject(
-          Excel.SpecialCellType.formulas,
-          Excel.SpecialCellValueType.errors
-      );
-
-      erroredCell.load({ address: true });
-
-      if (outputElement) {
-        outputElement.textContent = `Loading errored cell data... (this is where the sync might fail)`;
-      }
-
-      // This is the sync that sometimes throws in your original code
-      await context.sync(); // <--- this sync threw
-
-      // If we get here, the sync succeeded
-      let output = `✅ Test completed successfully!\n`;
-      output += `Original address: ${address}\n`;
-      output += `Wait duration: ${waitDuration} seconds\n`;
-      output += `Has spill parent: ${!cellSpillParentRange.isNullObject}\n`;
-      
-      if (!erroredCell.isNullObject) {
-        output += `Errored cell address: ${erroredCell.address}\n`;
-      } else {
-        output += `No errored cells found\n`;
-      }
-
-      if (outputElement) {
-        outputElement.textContent = output;
-      }
-
-      console.log("Spill error detection test completed successfully");
-
-    });
-
+    await Office.addin.setStartupBehavior(behavior);
+    console.log(`Load behavior set to ${behavior}`);
+    await getLoadBehavior(); // Refresh the display
   } catch (error) {
-    console.error("Error in spill error detection test:", error);
-    if (outputElement) {
-      let errorOutput = `❌ Error occurred during test:\n`;
-      errorOutput += `Error: ${error.message || error}\n`;
-      errorOutput += `Address tested: ${address}\n`;
-      errorOutput += `Worksheet: ${worksheetName}\n`;
-      errorOutput += `Wait duration: ${waitDuration} seconds\n`;
-      errorOutput += `\nThis might be the error you're trying to reproduce!`;
-      outputElement.textContent = errorOutput;
-    }
-  } finally {
-    // Re-enable button
-    button.disabled = false;
-    button.textContent = "Test Spill Error Detection";
+    console.error(`Error setting load behavior to ${behavior}:`, error);
   }
 }
