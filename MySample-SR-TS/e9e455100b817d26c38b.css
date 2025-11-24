@@ -18,8 +18,8 @@
  
  .ms-welcome__header {
     padding: 20px;
-    padding-bottom: 30px;
-    padding-top: 100px;
+    padding-bottom: 20px;
+    padding-top: 40px;
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: column;
@@ -79,68 +79,94 @@ b {
     font-weight: bold;
 }
 
-/* Function Management Styles */
-.function-management {
+/* Card Style */
+.card {
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132), 0 0.3px 0.9px 0 rgba(0,0,0,0.108);
+    padding: 20px;
+    margin-bottom: 20px;
     width: 100%;
     max-width: 400px;
-    margin-bottom: 30px;
+    box-sizing: border-box;
 }
 
-.input-group {
+.card-title {
+    margin-top: 0;
     margin-bottom: 20px;
+    font-weight: 600;
+    color: #323130;
 }
 
-.input-group label {
+/* Form Groups */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    color: #605e5c;
     font-weight: 600;
 }
 
-.input-button-pair {
+.input-with-button {
+    display: flex;
+    gap: 8px;
+}
+
+.input-with-button input {
+    flex: 1;
+    min-width: 0; /* Flexbox fix */
+}
+
+/* Status Row */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f3f2f1;
+    padding: 12px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+}
+
+.icon-button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+.icon-button:hover {
+    background-color: #e1dfdd;
+}
+
+/* Action Row */
+.action-row {
     display: flex;
     gap: 10px;
-    align-items: center;
 }
 
-.input-button-pair input[type="text"] {
+.full-width {
     flex: 1;
-    padding: 8px 12px;
-    border: 1px solid #a6a6a6;
-    border-radius: 2px;
-    font-size: 14px;
-    line-height: 20px;
 }
 
-.input-button-pair input[type="text"]:focus {
+/* Overrides/Adjustments */
+.ms-TextField-field {
+    border: 1px solid #8a8886;
+    border-radius: 2px;
+    padding: 0 8px;
+    height: 32px;
+    box-sizing: border-box;
+}
+.ms-TextField-field:focus {
     border-color: #0078d4;
-    outline: none;
 }
 
-.input-button-pair button {
-    white-space: nowrap;
-    min-width: 120px;
-}
-
-/* Range Reader Styles */
-.range-reader {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 30px;
-}
-
-.range-output {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #f3f2f1;
-    border: 1px solid #edebe9;
+.ms-Button {
+    height: 32px;
     border-radius: 2px;
-    min-height: 20px;
-    white-space: pre-wrap;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-.range-output:empty::before {
-    content: "Range values will appear here...";
-    color: #605e5c;
-    font-style: italic;
+    border: 1px solid transparent;
 }
