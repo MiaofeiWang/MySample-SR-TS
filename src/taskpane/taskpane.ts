@@ -24,6 +24,10 @@
   document.getElementById("setLoadBehaviorNoneBtn").onclick = () => setLoadBehavior(Office.StartupBehavior.none);
   document.getElementById("setLoadBehaviorLoadBtn").onclick = () => setLoadBehavior(Office.StartupBehavior.load);
 
+  // Add event listeners for visibility mode buttons
+  document.getElementById("addVisibilityHandlerBtn").onclick = addVisibilityHandler;
+  document.getElementById("removeVisibilityHandlerBtn").onclick = removeVisibilityHandler;
+
   await registerLinkedEntityDomains();
 })();
 
@@ -213,5 +217,61 @@ export async function setLoadBehavior(behavior: Office.StartupBehavior) {
     await getLoadBehavior(); // Refresh the display
   } catch (error) {
     console.error(`Error setting load behavior to ${behavior}:`, error);
+  }
+}
+
+let isVisibilityHandlerActive = false;
+let isHandlerRegistered = false;
+
+export async function addVisibilityHandler() {
+  try {
+    isVisibilityHandlerActive = true;
+    
+    if (!isHandlerRegistered) {
+      await Office.addin.onVisibilityModeChanged(onVisibilityModeChanged);
+      isHandlerRegistered = true;
+    }
+
+    updateVisibilityStatus("Status: Handler added");
+    console.log("Visibility handler added");
+  } catch (error) {
+    console.error("Error adding visibility handler:", error);
+    updateVisibilityStatus("Error adding handler");
+  }
+}
+
+export async function removeVisibilityHandler() {
+  try {
+    isVisibilityHandlerActive = false;
+    updateVisibilityStatus("Status: Handler removed");
+    console.log("Visibility handler removed (logically)");
+  } catch (error) {
+    console.error("Error removing visibility handler:", error);
+  }
+}
+
+async function onVisibilityModeChanged(args: any) {
+  if (!isVisibilityHandlerActive) {
+    return;
+  }
+
+  try {
+    console.log("Visibility changed:", args.visibilityMode);
+    
+    await Excel.run(async (context) => {
+      const sheet = context.workbook.worksheets.getActiveWorksheet();
+      const range = sheet.getRange("A1");
+      range.values = [[`Visibility changed to: ${args.visibilityMode}`]];
+      await context.sync();
+    });
+  } catch (error) {
+    console.error("Error in visibility handler:", error);
+  }
+}
+
+function updateVisibilityStatus(message: string) {
+  const statusElement = document.getElementById("visibilityStatus");
+  if (statusElement) {
+    statusElement.innerText = message;
   }
 }
