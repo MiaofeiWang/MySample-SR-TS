@@ -316,6 +316,24 @@
             }
         },
         {
+            "description": "Increments the value in cell C5 based on a pattern.",
+            "id": "INCREMENTC5",
+            "name": "INCREMENTC5",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Increments the value in cell C6 based on a pattern with delay for cell edit.",
+            "id": "INCREMENTC6DELAYFORCELLEDIT",
+            "name": "INCREMENTC6DELAYFORCELLEDIT",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "Get a simple linked entity with a random ID.",
             "id": "GETRANDOMLINKEDENTITY",
             "name": "GETRANDOMLINKEDENTITY",
