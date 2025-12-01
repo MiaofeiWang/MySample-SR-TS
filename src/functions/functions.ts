@@ -691,3 +691,65 @@ function getRelativeDate(relativeDays: number): string {
 function mockGetDataInTimeRange(startDate: string, endDate: string): string {
   return `Filtering data from ${startDate} to ${endDate}`;
 }
+
+/**
+ * Increments the value in cell C5 based on a pattern.
+ * @customfunction
+ * @returns {Promise<string>} The result of the operation.
+ */
+export async function incrementC5(): Promise<string> {
+  await Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+    const range = sheet.getRange("C5");
+    range.load("values");
+    await context.sync();
+
+    const currentValue = range.values[0][0];
+    const pattern = /^\[incrementC5\] executed (\d+)$/;
+    let newValue = "[incrementC5] executed 1";
+
+    if (currentValue && typeof currentValue === "string") {
+      const match = currentValue.match(pattern);
+      if (match) {
+        const currentCount = parseInt(match[1], 10);
+        newValue = `[incrementC5] executed ${currentCount + 1}`;
+      }
+    }
+
+    range.values = [[newValue]];
+    await context.sync();
+  });
+
+  return "Check C5";
+}
+
+/**
+ * Increments the value in cell C6 based on a pattern with delay for cell edit.
+ * @customfunction
+ * @returns {Promise<string>} The result of the operation.
+ */
+export async function incrementC6DelayForCellEdit(): Promise<string> {
+  await Excel.run({ delayForCellEdit: true }, async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+    const range = sheet.getRange("C6");
+    range.load("values");
+    await context.sync();
+
+    const currentValue = range.values[0][0];
+    const pattern = /^\[incrementC6\] executed (\d+)$/;
+    let newValue = "[incrementC6] executed 1";
+
+    if (currentValue && typeof currentValue === "string") {
+      const match = currentValue.match(pattern);
+      if (match) {
+        const currentCount = parseInt(match[1], 10);
+        newValue = `[incrementC6] executed ${currentCount + 1}`;
+      }
+    }
+
+    range.values = [[newValue]];
+    await context.sync();
+  });
+
+  return "Check C6 (Delayed)";
+}
